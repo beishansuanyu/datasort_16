@@ -41,12 +41,12 @@ f1 = open(file_name+"解析后结果.txt", "w+")
 #         + '\t' + 'HRG_ZT'+ '\t'+ 'HRG_rate' + '\t'+ 'HRG_angle' \
 #         + '\t' + 'HRG_freq'+ '\t'+ 'HRG_fz' + '\t'+ 'HRG_zj' \
 #         + '\t' + 'HRG_CNT'+ '\t'+ '温度' + '\t'+ '校验和'
-f1.write( '帧头' +'\t'+ '时标'+'\t'+ '状态字'+'\t'+ '滚转角'\
+f1.write(  '时标'+'\t'+ '状态字'+'\t'+ '滚转角'\
         + '\t'+ '滚转角速度'+ '\t'+ '重力基准'+ '\t'+ 'ay'+ '\t'+ 'az'\
         + '\t'+ 'Y轴加表采样值' + '\t'+ 'Z轴加表采样值' + '\t'+ 'ZLB_ang' \
         + '\t' + 'HRG_ZT'+ '\t'+ 'HRG_rate' + '\t'+ 'HRG_angle' \
         + '\t' + 'HRG_freq'+ '\t'+ 'HRG_fz' + '\t'+ 'HRG_zj' \
-        + '\t' + 'HRG_CNT'+ '\t' + 'ZLB_CNT'+ '\t'+ '温度' + '\t'+ '校验和')
+        + '\t' + 'HRG_CNT'+ '\t' + 'ZLB_CNT'+ '\t'+ '温度' )
 # f1.write('\n')
 # f2.write(title)
 f1.write('\n')
@@ -64,12 +64,12 @@ def write(item,f_temp):
         if a == 0: #帧头
 
             m = item[0:2]
-            dat = struct.unpack("2s", m)
-            dat = str(dat)
-            f_temp.write(dat)
+            # dat = struct.unpack("2s", m)
+            # dat = str(dat)
+            # # f_temp.write(dat)
         elif a == 1: #时标
             dat = int.from_bytes(item[2:5], byteorder='little')
-            str1 = '\t' + str(dat)
+            str1 =  str(dat)
             f_temp.write(str1)
         elif a == 2: #状态字
             f_temp.write('\t' +str(item[5]))
@@ -78,7 +78,7 @@ def write(item,f_temp):
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 4: #滚转角速度
-            dat = int.from_bytes(item[8:10], byteorder='little',signed=True)
+            dat = int.from_bytes(item[8:10], byteorder='little',signed=True)/4
             M = item[8:10]
             str1 = '\t' + str(dat)
             f_temp.write(str1)
@@ -113,18 +113,26 @@ def write(item,f_temp):
         elif a == 12: #HRG_rate
             byte_data = item[26:30]
             dat = struct.unpack("<f", byte_data)
-
-            str1 = '\t' + str(dat)
+            str_temp = str(dat).replace('(','')
+            str_temp = str_temp.replace(')','')
+            str_temp = str_temp.replace(',','')
+            str1 = '\t' + str(str_temp)
             f_temp.write(str1)
         elif a == 13:  # HRG_angle
             byte_data = item[30:34]
             dat = struct.unpack("<f", byte_data)
-            str1 = '\t' + str(dat)
+            str_temp = str(dat).replace('(', '')
+            str_temp = str_temp.replace(')', '')
+            str_temp = str_temp.replace(',', '')
+            str1 = '\t' + str(str_temp)
             f_temp.write(str1)
         elif a == 14:  # HRG_freq
             byte_data = item[34:38]
             dat = struct.unpack("<f", byte_data)
-            str1 = '\t' + str(dat)
+            str_temp = str(dat).replace('(','')
+            str_temp = str_temp.replace(')','')
+            str_temp = str_temp.replace(',','')
+            str1 = '\t' + str(str_temp)
             f_temp.write(str1)
         elif a == 15:  # HRG_fz
             dat = int.from_bytes(item[38:42], byteorder='little',signed=True)
@@ -147,8 +155,9 @@ def write(item,f_temp):
             str1 = '\t' + str(dat/2)
             f_temp.write(str1)
         elif a == 20:  # 校验和
-            str1 = '\t' + str(item[51])
-            f_temp.write(str1)
+            buzhidao = 0
+            # str1 = '\t' + str(item[51])
+            # f_temp.write(str1)
         else:
             break
 

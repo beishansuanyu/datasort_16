@@ -62,82 +62,84 @@ def write(item,f_temp):
 
     for a in range(21):
         if a == 0: #帧头
+
             m = item[0:2]
-            m = str(m)
-            f_temp.write(m)
+            dat = struct.unpack("2s", m)
+            dat = str(dat)
+            f_temp.write(dat)
         elif a == 1: #时标
-            dat = int.from_bytes(item[2:5], byteorder='big')
+            dat = int.from_bytes(item[2:5], byteorder='little')
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 2: #状态字
             f_temp.write('\t' +str(item[5]))
         elif a == 3: #滚转角
-            dat = int.from_bytes(item[6:8], byteorder='big')/90
+            dat = int.from_bytes(item[6:8], byteorder='little')/90
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 4: #滚转角速度
-            dat = int.from_bytes(item[8:10], byteorder='big',signed=True)
+            dat = int.from_bytes(item[8:10], byteorder='little',signed=True)
             M = item[8:10]
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 5: #重力基准
-            dat = int.from_bytes(item[10:12], byteorder='big',signed=True)/10
+            dat = int.from_bytes(item[10:12], byteorder='little',signed=True)/10
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 6: #ay
-            dat = int.from_bytes(item[12:14], byteorder='big',signed=True)/1000
+            dat = int.from_bytes(item[12:14], byteorder='little',signed=True)/1000
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 7: #az
-            dat = int.from_bytes(item[14:16], byteorder='big',signed=True)/1000
+            dat = int.from_bytes(item[14:16], byteorder='little',signed=True)/1000
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 8: #y轴加表采样值
-            dat = int.from_bytes(item[16:19], byteorder='big',signed=True)
+            dat = int.from_bytes(item[16:19], byteorder='little',signed=True)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 9: #z轴加表采样值
-            dat = int.from_bytes(item[19:22], byteorder='big',signed=True)
+            dat = int.from_bytes(item[19:22], byteorder='little',signed=True)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 10: #ZLB_ang
-            dat = int.from_bytes(item[22:24], byteorder='big',signed=True)/10
+            dat = int.from_bytes(item[22:24], byteorder='little',signed=True)/10
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 11: #HRG_ZT
-            dat = int.from_bytes(item[24:26], byteorder='big',signed=True)
+            dat = int.from_bytes(item[24:26], byteorder='little',signed=True)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 12: #HRG_rate
             byte_data = item[26:30]
-            dat = struct.unpack(">f", byte_data)
+            dat = struct.unpack("<f", byte_data)
 
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 13:  # HRG_angle
             byte_data = item[30:34]
-            dat = struct.unpack(">f", byte_data)
+            dat = struct.unpack("<f", byte_data)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 14:  # HRG_freq
             byte_data = item[34:38]
-            dat = struct.unpack(">f", byte_data)
+            dat = struct.unpack("<f", byte_data)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 15:  # HRG_fz
-            dat = int.from_bytes(item[38:42], byteorder='big',signed=True)
+            dat = int.from_bytes(item[38:42], byteorder='little',signed=True)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 16:  # HRG_zj
-            dat = int.from_bytes(item[42:46], byteorder='big',signed=True)
+            dat = int.from_bytes(item[42:46], byteorder='little',signed=True)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 17:  # HRG_CNT
-            dat = int.from_bytes(item[46:48], byteorder='big',signed=False)
+            dat = int.from_bytes(item[46:48], byteorder='little',signed=False)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 18:  # ZLB_CNT
-            dat = int.from_bytes(item[48:50], byteorder='big',signed=False)
+            dat = int.from_bytes(item[48:50], byteorder='little',signed=False)
             str1 = '\t' + str(dat)
             f_temp.write(str1)
         elif a == 19:  # 温度
